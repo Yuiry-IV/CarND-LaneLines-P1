@@ -50,7 +50,7 @@ My pipeline consisted of 10 steps:
     gs_image = grayscale( ranged_image )
 ``
 
-![ranged image][writeup_yiv_images/03_ranger_by_color_masks.png]
+<img src=./writeup_yiv_images/03_ranger_by_color_masks.png>
 
 1. Apply Gaussian blur with kernel size 6:
 
@@ -58,7 +58,7 @@ My pipeline consisted of 10 steps:
    blured_image = gaussian_blur( gs_image, 5 )
 ``
 
-![blured image][writeup_yiv_images/04_blured_image.png]
+<img src=./writeup_yiv_images/04_blured_image.png>
 
 1. Apply Canny edge detection beetwin 50 and 90:
 
@@ -66,7 +66,7 @@ My pipeline consisted of 10 steps:
    canny_image = canny( blured_image, 50, 90 )
 ``
 
-![canny image][writeup_yiv_images/05_canny_image.png]
+<img src=./writeup_yiv_images/05_canny_image.png>
 
 1. Apply Hough line transform: 
 
@@ -102,7 +102,7 @@ slope = -0.580, length=239.268, bottom_x= 156.950, top_x=616.490 [257 662 464 54
         hough_image = hough_lines( canny_image, 1, math.pi/180, hough_treshold, 5, 300 )
 ``
 
-![hough image][writeup_yiv_images/06_hough_image.png]
+<img src=./writeup_yiv_images/06_hough_image.png>
 
 1. Draw weithed lines with thikness 5:
 
@@ -119,7 +119,7 @@ slope = -0.580, length=239.268, bottom_x= 156.950, top_x=616.490 [257 662 464 54
 
 1. And recive somethig like this:
 
-![result][writeup_yiv_images/09_result_image.png]
+<img src=./writeup_yiv_images/09_result_image.png>
 
 ### 2. Identify potential shortcomings with your current pipeline
 
@@ -127,6 +127,6 @@ Weather, lighting or road surface conditions can broke the detection algorithm. 
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to use several channes detection in parallel 
+A possible improvement would be to use a smart filtering  memory beetwin several frames. 
 
 Another potential improvement could be to use filters or moderm ML/DL algorithms. 

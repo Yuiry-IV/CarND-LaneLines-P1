@@ -17,8 +17,9 @@ The goals / steps of this project are the following:
 
 ### 1. My pipeline description.
 
-My pipeline consisted of 10 steps.
+My pipeline consisted of 10 steps:
 1. Set region of interests to from 0.6 to 0.92 of heigth and form 0.1 to 0.9 of width of original image, also i've extended top of region of interests by 40 pixels: 
+
 ``
     w = in_image.shape[1]
     h = in_image.shape[0]
@@ -27,14 +28,21 @@ My pipeline consisted of 10 steps.
                                 (w*0.5+40, h*ROI_FACTOR),
                                 (w*0.9, h*0.92),
                                 ]], dtype=np.int32) )
+
 ``
+
 ![image masked by region of interest][writeup_yiv_images/01_masked_by_region_of_interest.png]
+
 1. Invert image, because according to my expirince it able easyly detect blue and black color in some corner cases when yellow and white:
+
 ``
     inverted_masked_image = cv2.bitwise_not( masked_image )
 ``
+
 ![inverted image][writeup_yiv_images/02_inverted_masked_image.png]
+
 1. Mask image by blue and black colors and grayscale image: 
+
 ``
     mask_blue  = cv2.inRange(inverted_masked_image, (0, 0, 128), (60, 110, 255))
     mask_black = cv2.inRange(inverted_masked_image, (0, 0, 0), (45, 45, 45))
@@ -42,27 +50,33 @@ My pipeline consisted of 10 steps.
     ranged_image = cv2.bitwise_and(masked_image, masked_image, mask=mask)
     gs_image = grayscale( ranged_image )
 ``
+
 ![ranged image][writeup_yiv_images/03_ranger_by_color_masks.png]
+
 1. Apply Gaussian blur with kernel size 6:
+
 ``
-blured_image = gaussian_blur( gs_image, 5 )
+   blured_image = gaussian_blur( gs_image, 5 )
 ``
+
 ![blured image][writeup_yiv_images/04_blured_image.png]
+
 1. Apply Canny edge detection beetwin 50 and 90:
+
 ``
-canny_image = canny( blured_image, 50, 90 )
+   canny_image = canny( blured_image, 50, 90 )
 ``
+
 ![canny image][writeup_yiv_images/05_canny_image.png]
+
 1. Apply Hough line transform: 
+
 ``
     lines = cv2.HoughLinesP( canny_image, 1, math.pi/180, 
                             threshold = hough_treshold, 
                             lines=np.array([]), minLineLength=5, maxLineGap=300)
 ``
-1. Iterate trough detected lines:
-   1. Detecte a slope, length and intersection of lines. 
-   1. Accumulate intersections for left and right lines weighted by detected line length
-   1. calculate intersection points
+
 ``
 slope = -0.579, length=249.562, bottom_x= 154.776, top_x=615.115 [255 662 471 537]
 slope = -0.672, length=224.100, bottom_x= 189.696, top_x=586.099 [276 662 462 537]
@@ -78,22 +92,34 @@ slope = -0.626, length=239.454, bottom_x= 174.291, top_x=600.112 [267 662 470 53
 slope = -0.648, length=233.549, bottom_x= 181.488, top_x=592.625 [271 662 467 535]
 slope = -0.580, length=239.268, bottom_x= 156.950, top_x=616.490 [257 662 464 542]
 ``
+
+1. Iterate trough detected lines:
+   1. Detecte a slope, length and intersection of lines. 
+   1. Accumulate intersections for left and right lines weighted by detected line length
+   1. calculate intersection points
 1. Applay hough_lines function:
+
 ``
         hough_image = hough_lines( canny_image, 1, math.pi/180, hough_treshold, 5, 300 )
 ``
+
 ![hough image][writeup_yiv_images/06_hough_image.png]
+
 1. Draw weithed lines with thikness 5:
+
 ``
-left_bottom_x=170.749, left_top_x=598.092,right_top_x==706.667, right_bottom_x==1120.865 
+   left_bottom_x=170.749, left_top_x=598.092,right_top_x==706.667, right_bottom_x==1120.865 
 ``
+
 ``
-            draw_lines( original_image, [ 
-                [ [ int( xbl/l_len ), int( h ), int( xtl/l_len ), int(h*TOP_FACTOR) ], 
-                  [ int( xbr/r_len ), int( h ), int( xtr/r_len ), int(h*TOP_FACTOR)            ]
-                ] ], thickness=5 )
+   draw_lines( original_image, [ 
+       [ [ int( xbl/l_len ), int( h ), int( xtl/l_len ), int(h*TOP_FACTOR) ], 
+         [ int( xbr/r_len ), int( h ), int( xtr/r_len ), int(h*TOP_FACTOR)            ]
+       ] ], thickness=5 )
 ``
+
 1. And recive somethig like this:
+
 ![result][writeup_yiv_images/09_result_image.png]
 
 ### 2. Identify potential shortcomings with your current pipeline

@@ -28,10 +28,9 @@ My pipeline consisted of 10 steps:
                                 (w*0.5+40, h*ROI_FACTOR),
                                 (w*0.9, h*0.92),
                                 ]], dtype=np.int32) )
-
 ``
 
-![image masked by region of interest][writeup_yiv_images/01_masked_by_region_of_interest.png]
+<img src=./writeup_yiv_images/01_masked_by_region_of_interest.png>
 
 1. Invert image, because according to my expirince it able easyly detect blue and black color in some corner cases when yellow and white:
 
@@ -39,7 +38,7 @@ My pipeline consisted of 10 steps:
     inverted_masked_image = cv2.bitwise_not( masked_image )
 ``
 
-![inverted image][writeup_yiv_images/02_inverted_masked_image.png]
+<img src=./writeup_yiv_images/02_inverted_masked_image.png>
 
 1. Mask image by blue and black colors and grayscale image: 
 
